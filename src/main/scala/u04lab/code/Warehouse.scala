@@ -8,7 +8,8 @@ trait Item {
 }
 
 object Item:
-  def apply(code: Int, name: String, tags: List[String] = List.empty): Item = ItemImpl(code, name, tags)
+  def apply(code: Int, name: String, tags: String*): Item =
+    ItemImpl(code, name, tags.map(e => cons(e, Nil())).reduce((l, r) =>  append(l, r)))
 
   private case class ItemImpl(code: Int, name: String, tags: List[String]) extends Item
 
@@ -57,4 +58,3 @@ object Warehouse:
     override def retrieve(code: Int): Option[Item] = find(items)(_.code == code)
     override def remove(item: Item): Unit = items = List.remove(items)(_ == item)
     override def contains(itemCode: Int): Boolean = !isEmpty(find(items)(_.code == itemCode))
-

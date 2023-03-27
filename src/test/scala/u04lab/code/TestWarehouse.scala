@@ -14,9 +14,9 @@ class TestWarehouse:
    * - Refactor the code of Item accepting a variable number of tags (hint: use _*)
    */
   private var warehouse: Warehouse = _
-  private val dellXps = Item(33, "Dell XPS 15", cons("notebook", empty))
-  private val dellInspiron = Item(34, "Dell Inspiron 13", cons("notebook", empty))
-  private val xiaomiMoped = Item(35, "Xiaomi S1", cons("moped", cons("mobility", empty)))
+  private val dellXps = Item(33, "Dell XPS 15", "notebook")
+  private val dellInspiron = Item(34, "Dell Inspiron 13", "notebook")
+  private val xiaomiMoped = Item(35, "Xiaomi S1", "moped", "mobility")
 
   private def storeItems(): Unit =
     warehouse.store(dellXps)
