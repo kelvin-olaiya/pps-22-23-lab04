@@ -28,4 +28,4 @@ object SecondDegreePolynomial:
       case SecondDegreePolynomial(s, f, c) => SecondDegreePolynomial(s + secondDegree, f + firstDegree, c + constant)
 
     override def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial = polynomial match
-      case SecondDegreePolynomial(s, f, c) => SecondDegreePolynomial(s + secondDegree, f + firstDegree, c + constant)
+      case SecondDegreePolynomial(s, f, c) => SecondDegreePolynomial(secondDegree - s, firstDegree - f, constant - c)

@@ -14,4 +14,4 @@ class TestSecondDegreePolynomial:
 
   @Test def testMultipleOperations(): Unit =
     val multipleOperations = fullPolynomial - (anotherPolynomial + simplePolynomial)
-    assertEquals(SecondDegreePolynomial(4.0, 3.0, 8.0), multipleOperations)
+    assertEquals(SecondDegreePolynomial(2.0, 1.0, 2.0), multipleOperations)
