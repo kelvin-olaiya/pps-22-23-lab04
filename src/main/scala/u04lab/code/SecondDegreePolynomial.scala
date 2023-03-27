@@ -11,18 +11,19 @@ trait SecondDegreePolynomial:
   def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial
   def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial
 
-
 object SecondDegreePolynomial:
   def apply(secondDegree: Double, firstDegree: Double, constant: Double): SecondDegreePolynomial =
     SecondDegreePolynomialImpl(secondDegree, firstDegree, constant)
 
   def unapply(polynomial: SecondDegreePolynomial): scala.Option[(Double, Double, Double)] =
     scala.Some((polynomial.secondDegree, polynomial.firstDegree, polynomial.constant))
-  private class SecondDegreePolynomialImpl(
-    val secondDegree: Double,
-    val firstDegree: Double,
-    val constant: Double
+
+  private case class SecondDegreePolynomialImpl(
+    secondDegree: Double,
+    firstDegree: Double,
+    constant: Double
   ) extends SecondDegreePolynomial:
+
     override def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial = polynomial match
       case SecondDegreePolynomial(s, f, c) => SecondDegreePolynomial(s + secondDegree, f + firstDegree, c + constant)
 
