@@ -9,10 +9,9 @@ trait Item {
 
 object Item:
   def apply(code: Int, name: String, tags: String*): Item =
-    ItemImpl(code, name, tags.map(e => cons(e, Nil())).reduce((l, r) =>  append(l, r)))
+    ItemImpl(code, name, tags.map(e => cons(e, empty)).reduce((l, r) =>  append(l, r)))
 
   private case class ItemImpl(code: Int, name: String, tags: List[String]) extends Item
-
 
 /**
  * A warehouse is a place where items are stored.
