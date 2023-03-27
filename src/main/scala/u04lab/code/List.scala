@@ -39,6 +39,8 @@ object List:
   def append[A](left: List[A], right: List[A]): List[A] = left match
     case Cons(head, rest) => Cons(head, append(rest, right))
     case Nil() => right
+    
+  def add[A](list: List[A], e: A): List[A] = append(list, cons(e, empty))
 
   def foldLeft[A, B](list: List[A])(init: B)(f: (B, A) => B): B = list match
     case Nil() => init
@@ -57,6 +59,10 @@ object List:
     case _ => None()
 
   def contains[A](list: List[A], elem: A): Boolean = !Option.isEmpty(find(list)(_ == elem))
+
+  def peek[A](l: List[A])(action: A => Unit): Unit = l match
+    case Cons(h, t) => action(h); peek(t)(action)
+    case _ => {}
 
   def remove[A](list: List[A])(f: A => Boolean): List[A] = list match
     case Cons(elem, rest) if f(elem) => rest
