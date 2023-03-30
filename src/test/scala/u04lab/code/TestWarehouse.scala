@@ -1,34 +1,31 @@
 package u04lab.code
 
-import org.junit.Assert.{assertEquals, assertFalse, assertTrue}
+import org.junit.Assert.{assertEquals, assertFalse, assertTrue, fail}
 import org.junit.Test
 import org.junit.Before
-import u04lab.code.List.{cons, empty}
+import u04lab.code.List.{cons, empty, foreach, take}
 import u04lab.code.Option.*
+
+object ItemsDef:
+  val dellXps: Item = Item(33, "Dell XPS 15", "notebook")
+  val dellInspiron: Item = Item(34, "Dell Inspiron 13", "notebook")
+  val xiaomiMoped: Item = Item(35, "Xiaomi S1", "moped", "mobility")
+  val items: List[Item] = List(dellXps, dellInspiron, xiaomiMoped)
+  val itemsWithCommonTag: List[Item] = take(items, 2)
+import ItemsDef.*
 
 class TestWarehouse:
   
-  /** Hints:
-   * - Implement retrieve using find
-   * - Implement remove using filter
-   * - Refactor the code of Item accepting a variable number of tags (hint: use _*)
-   */
   private var warehouse: Warehouse = _
-  private val dellXps = Item(33, "Dell XPS 15", "notebook")
-  private val dellInspiron = Item(34, "Dell Inspiron 13", "notebook")
-  private val xiaomiMoped = Item(35, "Xiaomi S1", "moped", "mobility")
 
-  private def storeItems(): Unit =
-    warehouse.store(dellXps)
-    warehouse.store(dellInspiron)
-    warehouse.store(xiaomiMoped)
+  private def storeItems(): Unit = foreach(items)(warehouse.store(_))
 
   @Before def setUp(): Unit =
     warehouse = Warehouse()
 
   @Test def testStore(): Unit =
     assertFalse(warehouse.contains(dellXps.code))
-    warehouse.store(dellXps) // side effect, add dell xps to the warehouse
+    warehouse.store(dellXps)
     assertTrue(warehouse contains dellXps.code)
 
   @Test def testSearch(): Unit =
@@ -45,3 +42,12 @@ class TestWarehouse:
     storeItems()
     warehouse.remove(dellXps)
     assertEquals(None(), warehouse.retrieve(dellXps.code))
+
+class ItemTest:
+  @Test def testSameTag(): Unit =
+    itemsWithCommonTag match
+      case sameTag(t) => assertEquals("notebook", t)
+      case _ => fail()
+    items match
+      case sameTag(_) => fail()
+      case _ =>

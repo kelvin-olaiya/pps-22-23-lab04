@@ -1,6 +1,7 @@
 package u04lab.code
 import List.*
-import u04lab.code.Option.isEmpty
+import u04lab.code.Option.{None, Some, isEmpty, toScalaOption}
+
 trait Item {
   def code: Int
   def name: String
@@ -12,6 +13,11 @@ object Item:
     ItemImpl(code, name, tags.map(e => cons(e, empty)).reduce((l, r) =>  append(l, r)))
 
   private case class ItemImpl(code: Int, name: String, tags: List[String]) extends Item
+
+object sameTag:
+  def unapply(items: List[Item]): scala.Option[String] = items match
+    case Cons(h, t) => toScalaOption(find(h.tags)(tag => allMatch(t)(i => contains(i.tags, tag))))
+    case Nil() => scala.None
 
 /**
  * A warehouse is a place where items are stored.

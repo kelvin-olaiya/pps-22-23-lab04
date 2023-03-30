@@ -72,6 +72,12 @@ object List:
     case Cons(elem, rest) if f(elem) => rest
     case Cons(elem, rest) => Cons(elem, remove(rest)(f))
     case _ => Nil()
+    
+  @tailrec
+  def allMatch[A](list: List[A])(pred: A => Boolean): Boolean = list match
+    case Cons(h, t) if pred(h) => allMatch(t)(pred)
+    case Cons(_, _) => false
+    case _ => true 
 
   def take[A](list: List[A], n: Int): List[A] = reverse(drop(reverse(list), length(list) - n))
 end List
