@@ -60,9 +60,10 @@ object List:
 
   def contains[A](list: List[A], elem: A): Boolean = !Option.isEmpty(find(list)(_ == elem))
 
-  def peek[A](l: List[A])(action: A => Unit): Unit = l match
-    case Cons(h, t) => action(h); peek(t)(action)
-    case _ => {}
+  @tailrec
+  def foreach[A](l: List[A])(action: A => Unit): Unit = l match
+    case Cons(h, t) => action(h); foreach(t)(action)
+    case _ =>
 
   def remove[A](list: List[A])(f: A => Boolean): List[A] = list match
     case Cons(elem, rest) if f(elem) => rest
