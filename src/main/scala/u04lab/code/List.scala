@@ -10,6 +10,9 @@ enum List[E]:
 
 // a companion object (i.e., module) for List
 object List:
+
+  def apply[E](elements: E*): List[E] = elements.map(e => cons(e, empty)).reduce((acc, l) => append(acc, l))
+
   def empty[E]: List[E] = Nil()
 
   def cons[E](h: E, t: List[E]): List[E] = Cons(h, t)
