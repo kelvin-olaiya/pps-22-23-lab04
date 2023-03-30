@@ -20,13 +20,15 @@ class LogicsImpl2(private val size: Int, private val nBombs: Int) extends Logics
   private var hitCells: List[Cell] = empty
 
   override def hasBomb(row: Int, column: Int): Boolean = grid hasBombIn Cell(row, column)
-  
+
   override def hit(row: Int, column: Int): Boolean =
-    hitCells = add(hitCells, Cell(row, column))
     def execIf(cond: Boolean)(exec: () => Unit): Boolean = { if cond then exec(); cond }
-    hasBomb(row, column) || execIf(grid.bombsAdjacentTo(Cell(row, column)) == 0)(
-      () => hitAdjacentCells(Cell(row, column)))
-    
+    execIf(!contains(hitCells, Cell(row, column)))(() => hitCells = add(hitCells, Cell(row, column)))
+    hasBomb(row, column) || { 
+      execIf(grid.bombsAdjacentTo(Cell(row, column)) == 0)(() => hitAdjacentCells(Cell(row, column))) 
+      false 
+    }
+
   private def hitAdjacentCells(cell: Cell): Unit =
     foreach(filter(grid cellsAdjacentTo cell)(!contains(hitCells, _)))(c => hit(c.row, c.column))
 
