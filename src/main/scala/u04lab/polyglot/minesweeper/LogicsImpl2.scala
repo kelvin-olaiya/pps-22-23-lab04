@@ -3,7 +3,7 @@ import u04lab.code
 
 import java.util.Optional
 import u04lab.code.List
-import u04lab.code.List.{remove, *}
+import u04lab.code.List.*
 import u04lab.polyglot.OptionToOptional
 import u04lab.code.Option
 import u04lab.code.Option.{None, Some}
@@ -12,7 +12,6 @@ import u04lab.polyglot.minesweeper.model.{Cell, Grid}
 import java.util
 import scala.annotation.tailrec
 import scala.util.Random
-import Utils.*
 import SimpleSet.*
 
 class LogicsImpl2(private val size: Int, private val nBombs: Int) extends Logics:
@@ -26,7 +25,7 @@ class LogicsImpl2(private val size: Int, private val nBombs: Int) extends Logics
   override def hit(row: Int, column: Int): Boolean =
     hitCells add Cell(row, column)
     hasBomb(row, column) || { 
-      execIf(grid.bombsAdjacentTo(Cell(row, column)) == 0)(() => hitAdjacentCells(Cell(row, column))) 
+      if grid.bombsAdjacentTo(Cell(row, column)) == 0 then hitAdjacentCells(Cell(row, column)) 
       false 
     }
 
