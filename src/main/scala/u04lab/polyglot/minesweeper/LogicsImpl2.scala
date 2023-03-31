@@ -24,7 +24,7 @@ class LogicsImpl2(private val size: Int, private val nBombs: Int) extends Logics
   override def hasBomb(row: Int, column: Int): Boolean = grid hasBombIn Cell(row, column)
 
   override def hit(row: Int, column: Int): Boolean =
-    execIf(!(hitCells contains Cell(row, column)))(() => hitCells add Cell(row, column))
+    hitCells add Cell(row, column)
     hasBomb(row, column) || { 
       execIf(grid.bombsAdjacentTo(Cell(row, column)) == 0)(() => hitAdjacentCells(Cell(row, column))) 
       false 
