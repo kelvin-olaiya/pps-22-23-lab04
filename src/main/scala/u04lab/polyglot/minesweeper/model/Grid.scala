@@ -1,7 +1,8 @@
 package u04lab.polyglot.minesweeper.model
 
 import u04lab.code.List
-import u04lab.code.List.{add, append, cons, contains, empty, filter, length}
+import u04lab.code.List.{cons, append, empty, filter, length}
+import u04lab.polyglot.minesweeper.SimpleSet
 
 import scala.annotation.tailrec
 import scala.util.Random
@@ -19,25 +20,25 @@ object Grid:
 
   private class GridImpl(side: Int, nBombs: Int) extends Grid:
     private val random = Random()
-    private var cellsWithBombs = empty[Cell]
+    private val cellsWithBombs = SimpleSet[Cell]
 
     @tailrec
     private def placeBombs(numberOfBombs: Int): Unit =
-      if numberOfBombs > 0 then { cellsWithBombs = add(cellsWithBombs, emptyCell); placeBombs(numberOfBombs - 1) }
+      if numberOfBombs > 0 then { cellsWithBombs add emptyCell; placeBombs(numberOfBombs - 1) }
     placeBombs(nBombs)
 
     @tailrec
     private def emptyCell: Cell = Cell(random.nextInt(side), random.nextInt(side)) match
-      case c if contains(cellsWithBombs, c) => emptyCell
+      case c if cellsWithBombs contains c => emptyCell
       case c => c
 
     override val cells: List[Cell] = (0 until side)
       .flatMap(i => (0 until side).map(j => cons(Cell(i, j), empty)))
       .reduce((l, r) => append(l, r))
     
-    override def bombsCount: Int = length(cellsWithBombs)
+    override def bombsCount: Int = cellsWithBombs.size
 
-    override def hasBombIn(cell: Cell): Boolean = contains(cellsWithBombs, cell)
+    override def hasBombIn(cell: Cell): Boolean = cellsWithBombs contains cell
     
     override def cellsAdjacentTo(cell: Cell): List[Cell] = filter(cells)(_ isAdjacentTo cell)
 
