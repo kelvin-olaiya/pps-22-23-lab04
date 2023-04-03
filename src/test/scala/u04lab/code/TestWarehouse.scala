@@ -31,7 +31,7 @@ class TestWarehouse:
   @Test def testSearch(): Unit =
     storeItems()
     assertEquals(cons(xiaomiMoped, empty),  warehouse.searchItems("mobility"))
-    assertEquals(cons(dellXps, cons(dellInspiron, empty)), warehouse.searchItems("notebook"))
+    assertEquals(cons(dellInspiron, cons(dellXps, empty)), warehouse.searchItems("notebook"))
 
   @Test def testRetrieve(): Unit =
     storeItems()

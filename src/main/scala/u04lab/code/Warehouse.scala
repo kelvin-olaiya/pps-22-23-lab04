@@ -10,13 +10,13 @@ trait Item {
 
 object Item:
   def apply(code: Int, name: String, tags: String*): Item =
-    ItemImpl(code, name, tags.map(e => cons(e, empty)).reduce((l, r) =>  append(l, r)))
+    ItemImpl(code, name, tags.foldRight(empty[String])(cons))
 
   private case class ItemImpl(code: Int, name: String, tags: List[String]) extends Item
 
 object sameTag:
   def unapply(items: List[Item]): scala.Option[String] = items match
-    case Cons(h, t) => toScalaOption(find(h.tags)(tag => allMatch(t)(i => contains(i.tags, tag))))
+    case Cons(h, t) => toScalaOption(find(h.tags)(tag => length(t) == length(filter(t)(i => contains(i.tags, tag)))))
     case Nil() => scala.None
 
 /**
@@ -58,7 +58,7 @@ object Warehouse:
 
   private class WarehouseImpl extends Warehouse:
     private var items: List[Item] = empty
-    override def store(item: Item): Unit = items = append(items, cons(item, empty))
+    override def store(item: Item): Unit = items = cons(item, items)
     override def searchItems(tag: String): List[Item] = filter(items)(i => List.contains(i.tags, tag))
     override def retrieve(code: Int): Option[Item] = find(items)(_.code == code)
     override def remove(item: Item): Unit = items = List.remove(items)(_ == item)
