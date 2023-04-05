@@ -16,8 +16,8 @@ object Item:
 
 object sameTag:
   def unapply(items: List[Item]): scala.Option[String] = items match
-    case Cons(h, t) => toScalaOption(find(h.tags)(tag => length(t) == length(filter(t)(i => contains(i.tags, tag)))))
-    case Nil() => scala.None
+    case Cons(h, _) => toScalaOption(first(foldLeft(items)(h.tags)((s, e) => intersect(s, e.tags))))
+    case _ => scala.None
 
 /**
  * A warehouse is a place where items are stored.

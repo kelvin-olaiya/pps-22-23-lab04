@@ -45,6 +45,7 @@ object List:
     
   def add[A](list: List[A], e: A): List[A] = append(list, cons(e, empty))
 
+  @tailrec
   def foldLeft[A, B](list: List[A])(init: B)(f: (B, A) => B): B = list match
     case Nil() => init
     case Cons(h, t) => foldLeft(t)(f(init, h))(f)
@@ -61,7 +62,11 @@ object List:
     case Cons(elem, rest) => find(rest)(f)
     case _ => None()
 
+  def first[A](list: List[A]): Option[A] = find(list)(_ => true)
+
   def contains[A](list: List[A], elem: A): Boolean = !Option.isEmpty(find(list)(_ == elem))
+
+  def intersect[A](left: List[A], right: List[A]): List[A] = filter(left)(contains(right, _))
 
   @tailrec
   def foreach[A](l: List[A])(action: A => Unit): Unit = l match
