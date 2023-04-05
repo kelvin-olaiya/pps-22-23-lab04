@@ -20,11 +20,11 @@ object Grid:
 
   private class GridImpl(side: Int, nBombs: Int) extends Grid:
     private val random = Random()
-    private val cellsWithBombs = SimpleSet[Cell]
+    private var cellsWithBombs = SimpleSet[Cell]()
 
     @tailrec
     private def placeBombs(numberOfBombs: Int): Unit =
-      if numberOfBombs > 0 then { cellsWithBombs add emptyCell; placeBombs(numberOfBombs - 1) }
+      if numberOfBombs > 0 then { cellsWithBombs = cellsWithBombs add emptyCell; placeBombs(numberOfBombs - 1) }
     placeBombs(nBombs)
 
     @tailrec
